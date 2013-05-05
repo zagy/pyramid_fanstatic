@@ -48,7 +48,7 @@ class TestTween(unittest.TestCase):
 class TestCustomConfig(unittest.TestCase):
 
     _custom_config = {
-            'fanstatic.publisher_signature': 'custom_sign',
+        'fanstatic.publisher_signature': 'custom_sign',
     }
 
     def setUp(self):
@@ -62,6 +62,7 @@ class TestCustomConfig(unittest.TestCase):
     def tearDown(self):
         testing.tearDown()
 
+
 class TestCustomConfigPublisherSignature(TestCustomConfig):
 
     def test_injector(self):
@@ -72,6 +73,7 @@ class TestCustomConfigPublisherSignature(TestCustomConfig):
     def test_publisher(self):
         resp = self.app.get('/custom_sign/jquery/jquery.js')
         resp.mustcontain('window.jQuery = window.$ = jQuery;')
+
 
 class TestCustomConfigUseApplicationUri(TestCustomConfig):
     """Test specifying use of application URI for Fanstatic resources.
@@ -88,7 +90,8 @@ class TestCustomConfigUseApplicationUri(TestCustomConfig):
     def setUp(self):
         """Set up and add dummy route to webtest application."""
         super(TestCustomConfigUseApplicationUri, self).setUp()
-        self.config.add_route('dummy', '/subdir/page', view=home) #dummy route
+        # dummy route
+        self.config.add_route('dummy', '/subdir/page', view=home)
         self.app = TestApp(self.config.make_wsgi_app())
 
     def test_base_url_is_set(self):
