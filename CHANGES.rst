@@ -4,7 +4,8 @@ Changelog
 0.5 (unreleased)
 ----------------
 
-- No changes yet.
+- Python 3.3 support (through WebOb >= 1.2)
+  [gotcha]
 
 
 0.4 (2012-09-21)
