@@ -61,7 +61,7 @@ class Tween(object):
 
         if needed.has_resources():
             result = needed.render_topbottom_into_html(response.body)
-            response.body = ''
+            response.body = b''
             response.write(result)
         fanstatic.del_needed()
         return response
