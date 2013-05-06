@@ -1,0 +1,6 @@
+.tox
+.coverage
+lib
+bin
+include
+*.egg

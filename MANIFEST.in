@@ -1,1 +1,2 @@
 recursive-include pyramid_fanstatic *_tmpl
+include *.rst
