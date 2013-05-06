@@ -3,6 +3,6 @@ python:
 - '2.6'
 - '2.7'
 - '3.3'
-before_install: make $TRAVIS_PYTHON_VERSION
+before_install: make python$TRAVIS_PYTHON_VERSION
 install: python setup.py develop
 script: nosetests
