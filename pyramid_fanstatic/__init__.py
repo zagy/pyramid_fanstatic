@@ -2,13 +2,9 @@
 from fanstatic.config import convert_config
 from fanstatic.publisher import Publisher
 import fanstatic
-import logging
 import os
 import wsgiref.util
 from pyramid.settings import asbool
-
-log = logging.getLogger(__name__)
-
 
 def fanstatic_config(config, prefix='fanstatic.'):
     cfg = {'publisher_signature': fanstatic.DEFAULT_SIGNATURE}
