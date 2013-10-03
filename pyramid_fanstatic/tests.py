@@ -7,6 +7,8 @@ from webtest import TestApp
 from js.jquery import jquery
 import fanstatic
 
+if not hasattr(unittest.TestCase, 'assertNotIn'):
+    import unittest2 as unittest
 
 def home(request):
     resp = request.response
