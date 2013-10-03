@@ -90,7 +90,8 @@ class TestCustomConfigUseApplicationUri(TestCustomConfig):
     def setUp(self):
         """Set up and add dummy route to webtest application."""
         super(TestCustomConfigUseApplicationUri, self).setUp()
-        self.config.add_route('dummy', '/subdir/page', view=home) #dummy route
+        self.config.add_route('dummy', '/subdir/page') #dummy route
+        self.config.add_view(home, route_name='dummy')
         self.app = TestApp(self.config.make_wsgi_app())
 
     def test_base_url_is_set(self):
