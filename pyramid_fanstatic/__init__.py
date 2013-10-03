@@ -16,34 +16,38 @@ def fanstatic_config(config, prefix='fanstatic.'):
     return convert_config(cfg)
 
 
-class Tween(object):
-    def __init__(self, handler, config):
-        self.use_application_uri = asbool(
-            config.pop('fanstatic.use_application_uri', False))
-        self.config = fanstatic_config(config)
+class PublisherTween(object):
+    def __init__(self, handler, registry):
+        self.config = fanstatic_config(registry.settings)
         self.handler = handler
         self.publisher = Publisher(fanstatic.get_library_registry())
         self.publisher_signature = self.config.get('publisher_signature')
         self.trigger = '/%s/' % self.publisher_signature
 
-        self.injector = injector_plugin_from_config(self.config)
-
     def __call__(self, request):
-
-        # publisher
         if len(request.path_info.split(self.trigger)) > 1:
             path_info = request.path_info
             ignored = request.path_info_pop()
             while ignored != self.publisher_signature:
                 ignored = request.path_info_pop()
             response = request.get_response(self.publisher)
+            if response.status_int != 404:
+                return response
             # forward to handler if the resource could not be found
-            if response.status_int == 404:
-                request.path_info = path_info
-                return self.handler(request)
-            return response
+            request.path_info = path_info
 
-        # injector
+        return self.handler(request)
+
+class InjectorTween(object):
+    def __init__(self, handler, registry):
+        settings = registry.settings.copy()
+        self.use_application_uri = asbool(
+            settings.pop('fanstatic.use_application_uri', False))
+        self.config = fanstatic_config(settings)
+        self.handler = handler
+        self.injector = injector_plugin_from_config(self.config)
+
+    def __call__(self, request):
         needed = fanstatic.init_needed(**self.config)
         if self.use_application_uri and not needed.has_base_url():
             base_url = wsgiref.util.application_uri(request.environ)
@@ -83,7 +87,8 @@ def injector_plugin_from_config(config):
 
 
 def tween_factory(handler, registry):
-    return Tween(handler, registry.settings.copy())
+    # b/c: compose publisher and injector
+    return PublisherTween(InjectorTween(handler, registry), registry)
 
 
 def includeme(config):
