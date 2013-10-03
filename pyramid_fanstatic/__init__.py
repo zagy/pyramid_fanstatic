@@ -6,6 +6,8 @@ import os
 import wsgiref.util
 from pyramid.settings import asbool
 
+CONTENT_TYPES = ['text/html', 'text/xml', 'application/xhtml+xml']
+
 def fanstatic_config(config, prefix='fanstatic.'):
     cfg = {'publisher_signature': fanstatic.DEFAULT_SIGNATURE}
     for k, v in config.items():
@@ -47,20 +49,20 @@ class Tween(object):
             needed.set_base_url(base_url.rstrip('/'))
         request.environ[fanstatic.NEEDED] = needed
 
-        response = self.handler(request)
+        try:
+            response = self.handler(request)
 
-        if not (response.content_type and
-                response.content_type.lower() in ['text/html',
-                                                  'text/xml']):
-            fanstatic.del_needed()
+            if response.content_type \
+                   and response.content_type.lower() in CONTENT_TYPES \
+                   and needed.has_resources():
+
+                result = needed.render_topbottom_into_html(response.body)
+                response.body = ''
+                response.write(result)
+
             return response
-
-        if needed.has_resources():
-            result = needed.render_topbottom_into_html(response.body)
-            response.body = ''
-            response.write(result)
-        fanstatic.del_needed()
-        return response
+        finally:
+            fanstatic.del_needed()
 
 
 def tween_factory(handler, registry):
