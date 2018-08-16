@@ -10,6 +10,7 @@ import fanstatic
 if not hasattr(unittest.TestCase, 'assertNotIn'):
     import unittest2 as unittest
 
+
 def home(request):
     resp = request.response
     resp.content_type = 'text/html'
@@ -37,10 +38,10 @@ class TestTween(unittest.TestCase):
     def test_injector(self):
         resp = self.app.get('/')
         resp.mustcontain(('<script type="text/javascript" '
-                          'src="/fanstatic/jquery/jquery.js"></script>'))
+                          'src="/fanstatic/jquery/jquery-3.3.1.js"></script>'))
 
     def test_publisher(self):
-        resp = self.app.get('/fanstatic/jquery/jquery.js')
+        resp = self.app.get('/fanstatic/jquery/jquery-3.3.1.js')
         resp.mustcontain('window.jQuery = window.$ = jQuery;')
 
     def tearDown(self):
@@ -70,10 +71,10 @@ class TestCustomConfigPublisherSignature(TestCustomConfig):
     def test_injector(self):
         resp = self.app.get('/')
         resp.mustcontain(('<script type="text/javascript" '
-                          'src="/custom_sign/jquery/jquery.js"></script>'))
+                          'src="/custom_sign/jquery/jquery-3.3.1.js"></script>'))
 
     def test_publisher(self):
-        resp = self.app.get('/custom_sign/jquery/jquery.js')
+        resp = self.app.get('/custom_sign/jquery/jquery-3.3.1.js')
         resp.mustcontain('window.jQuery = window.$ = jQuery;')
 
 
@@ -92,7 +93,7 @@ class TestCustomConfigUseApplicationUri(TestCustomConfig):
     def setUp(self):
         """Set up and add dummy route to webtest application."""
         super(TestCustomConfigUseApplicationUri, self).setUp()
-        self.config.add_route('dummy', '/subdir/page') #dummy route
+        self.config.add_route('dummy', '/subdir/page')  #dummy route
         self.config.add_view(home, route_name='dummy')
 
         self.app = TestApp(self.config.make_wsgi_app())
@@ -106,7 +107,7 @@ class TestCustomConfigUseApplicationUri(TestCustomConfig):
     def test_base_url_complex(self):
         """Check resource URLs generated for a complex environ."""
 
-        #http://example.com:8080/exampleapp/subdir/page?foo=bar
+        # http://example.com:8080/exampleapp/subdir/page?foo=bar
         environ = {
             'wsgi.url_scheme': 'https',
             'HTTP_HOST': 'example.com:8080',
@@ -117,14 +118,14 @@ class TestCustomConfigUseApplicationUri(TestCustomConfig):
         resp = self.app.get('/', extra_environ=environ)
         resp.mustcontain(('<script type="text/javascript" '
                           'src="https://example.com:8080/exampleapp/'
-                          'fanstatic/jquery/jquery.js"></script>'))
+                          'fanstatic/jquery/jquery-3.3.1.js"></script>'))
         self.assertNotIn(environ['PATH_INFO'].encode('utf8'), resp.body)
         self.assertNotIn(environ['QUERY_STRING'].encode('utf8'), resp.body)
 
     def test_base_url_simple(self):
         """Check resource URLs generated for a simple environ."""
 
-        #https://example.com/exampleapp/
+        # https://example.com/exampleapp/
         environ = {
             'wsgi.url_scheme': 'http',
             'HTTP_HOST': '',
@@ -134,7 +135,7 @@ class TestCustomConfigUseApplicationUri(TestCustomConfig):
         resp = self.app.get('/', extra_environ=environ)
         resp.mustcontain(('<script type="text/javascript" '
                           'src="http://example.com/'
-                          'fanstatic/jquery/jquery.js"></script>'))
+                          'fanstatic/jquery/jquery-3.3.1.js"></script>'))
         self.assertNotIn(b':' + environ['SERVER_PORT'].encode('utf8'),
                          resp.body)
 
@@ -158,5 +159,5 @@ class TestCustomConfigUseApplicationUriPrecendence(TestCustomConfig):
         resp = self.app.get('/', extra_environ=environ)
         resp.mustcontain(('<script type="text/javascript" '
                           'src="https://example.com:1234/exampleapp/'
-                          'fanstatic/jquery/jquery.js"></script>'))
+                          'fanstatic/jquery/jquery-3.3.1.js"></script>'))
         self.assertNotIn(environ['HTTP_HOST'].encode('utf8'), resp.body)
