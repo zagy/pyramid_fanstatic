@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from fanstatic.config import convert_config
 from fanstatic.publisher import Publisher
+from pyramid.exceptions import ConfigurationError
 import fanstatic
 import os
 import six
