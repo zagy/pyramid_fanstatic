@@ -63,7 +63,7 @@ class InjectorTween(object):
                    and needed.has_resources():
 
                 result = self.injector(response.body, needed, request, response)
-                response.body = ''
+                response.text = ''
                 response.write(result)
 
             return response
