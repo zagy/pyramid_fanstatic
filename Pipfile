@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+
+[packages]
+pyramid-fanstatic = {path = ".", editable = true}
+"zc.buildout" = "*"
+webob = "*"
+pyramid = "*"
+"js.jquery" = "*"
+coverage = "*"
+webtest = "*"
+nose = "*"
+
+[requires]
+python_version = "3.7"
