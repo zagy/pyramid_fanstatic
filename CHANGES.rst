@@ -1,11 +1,16 @@
 Changelog
 =========
 
-0.5 (unreleased)
+0.6 (unreleased)
 ----------------
 
-- Python 3.3 support (through WebOb >= 1.2)
-  [gotcha]
+- Python 3 support (through WebOb >= 1.2) [gotcha]
+
+
+0.5 (2013-11-08)
+----------------
+
+- Support fanstatic > 1.0 with backward compat
 
 
 0.4 (2012-09-21)
