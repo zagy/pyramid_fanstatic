@@ -2,11 +2,12 @@
 from fanstatic.config import convert_config
 from fanstatic.publisher import Publisher
 from pyramid.exceptions import ConfigurationError
+from pyramid.settings import asbool
 import fanstatic
 import os
 import six
 import wsgiref.util
-from pyramid.settings import asbool
+
 
 CONTENT_TYPES = ['text/html', 'text/xml', 'application/xhtml+xml']
 
