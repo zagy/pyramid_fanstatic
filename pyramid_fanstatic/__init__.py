@@ -3,6 +3,7 @@ from fanstatic.config import convert_config
 from fanstatic.publisher import Publisher
 import fanstatic
 import os
+import six
 import wsgiref.util
 from pyramid.settings import asbool
 
@@ -63,7 +64,7 @@ class InjectorTween(object):
                    and needed.has_resources():
 
                 result = self.injector(response.body, needed, request, response)
-                response.text = ''
+                response.text = six.u('')
                 response.write(result)
 
             return response

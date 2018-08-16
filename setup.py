@@ -32,6 +32,7 @@ setup(name='pyramid_fanstatic',
           # -*- Extra requirements: -*-
           'pyramid',
           'fanstatic',
+          'six',
       ],
       entry_points="""
       # -*- Entry points: -*-
