@@ -7,6 +7,8 @@ from webtest import TestApp
 from js.jquery import jquery
 import fanstatic
 
+if not hasattr(unittest.TestCase, 'assertNotIn'):
+    import unittest2 as unittest
 
 def home(request):
     resp = request.response
@@ -90,8 +92,9 @@ class TestCustomConfigUseApplicationUri(TestCustomConfig):
     def setUp(self):
         """Set up and add dummy route to webtest application."""
         super(TestCustomConfigUseApplicationUri, self).setUp()
-        # dummy route
-        self.config.add_route('dummy', '/subdir/page', view=home)
+        self.config.add_route('dummy', '/subdir/page') #dummy route
+        self.config.add_view(home, route_name='dummy')
+
         self.app = TestApp(self.config.make_wsgi_app())
 
     def test_base_url_is_set(self):
